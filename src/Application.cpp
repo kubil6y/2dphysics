@@ -1,7 +1,5 @@
 #include "Application.h"
 #include "Physics/Constants.h"
-#include <iostream>
-#include <string>
 
 bool Application::IsRunning() {
     return running;
@@ -9,7 +7,11 @@ bool Application::IsRunning() {
 
 void Application::Setup() {
     running = Graphics::OpenWindow();
+
     particle = new Particle(50, 100, 1.f);
+    particle->acceleration = Vec2{0.f, 9.81f * PIXELS_PER_METER};
+    particle->velocity = Vec2{500.f, 200.f};
+    particle->radius = 4;
 }
 
 void Application::Input() {
@@ -40,15 +42,22 @@ void Application::Update() {
     }
     timePreviousFrame = SDL_GetTicks();
 
-    std::cout << std::to_string(deltaTime) << std::endl;
+    // Integration of velocity and acceleration
+    particle->velocity += particle->acceleration * deltaTime;
+    particle->position += particle->velocity * deltaTime;
 
-    particle->velocity = Vec2(100 * deltaTime, 30 * deltaTime);
-    particle->position += particle->velocity;
+    // Keep in boundaries
+    if (particle->position.x >= Graphics::Width() || particle->position.x <= 0.f) {
+        particle->velocity.x *= -1;
+    }
+    if (particle->position.y >= Graphics::Height() || particle->position.y <= 0.f) {
+        particle->velocity.y *= -1;
+    }
 }
 
 void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
-    Graphics::DrawFillCircle(particle->position.x, particle->position.y, 4.f,
+    Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius,
                              0xFFFFFFFF);
     Graphics::RenderFrame();
 }
