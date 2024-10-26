@@ -11,4 +11,6 @@ struct Particle {
 
     Particle(float x, float y, float mass);
     ~Particle();
+
+    void Integrate(float deltaTime);
 };

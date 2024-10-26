@@ -42,9 +42,7 @@ void Application::Update() {
     }
     timePreviousFrame = SDL_GetTicks();
 
-    // Integration of velocity and acceleration
-    particle->velocity += particle->acceleration * deltaTime;
-    particle->position += particle->velocity * deltaTime;
+    particle->Integrate(deltaTime);
 
     // Keep in boundaries
     if (particle->position.x - particle->radius <= 0) {
