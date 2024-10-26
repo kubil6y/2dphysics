@@ -9,9 +9,9 @@ void Application::Setup() {
     running = Graphics::OpenWindow();
 
     particle = new Particle(50, 100, 1.f);
-    particle->acceleration = Vec2{0.f, 9.81f * PIXELS_PER_METER};
-    particle->velocity = Vec2{500.f, 200.f};
-    particle->radius = 4;
+    particle->acceleration.x = 2.f * PIXELS_PER_METER;
+    particle->acceleration.y = 2.f * PIXELS_PER_METER;
+    particle->radius = 10;
 }
 
 void Application::Input() {
@@ -47,18 +47,25 @@ void Application::Update() {
     particle->position += particle->velocity * deltaTime;
 
     // Keep in boundaries
-    if (particle->position.x >= Graphics::Width() || particle->position.x <= 0.f) {
-        particle->velocity.x *= -1;
-    }
-    if (particle->position.y >= Graphics::Height() || particle->position.y <= 0.f) {
-        particle->velocity.y *= -1;
+    if (particle->position.x - particle->radius <= 0) {
+        particle->position.x = particle->radius;
+        particle->velocity.x *= -0.9f;
+    } else if (particle->position.x + particle->radius >= Graphics::Width()) {
+        particle->position.x = Graphics::Width() - particle->radius;
+        particle->velocity.x *= -0.9f;
+    } else if (particle->position.y - particle->radius <= 0) {
+        particle->position.y = particle->radius;
+        particle->velocity.y *= -0.9f;
+    } else if (particle->position.y + particle->radius >= Graphics::Height()) {
+        particle->position.y = Graphics::Height() - particle->radius;
+        particle->velocity.y *= -0.9f;
     }
 }
 
 void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
-    Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius,
-                             0xFFFFFFFF);
+    Graphics::DrawFillCircle(particle->position.x, particle->position.y,
+                             particle->radius, 0xFFFFFFFF);
     Graphics::RenderFrame();
 }
 
