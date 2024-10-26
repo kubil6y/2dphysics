@@ -17,10 +17,20 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_GFX_I
 # Specify source files
 set(SOURCES
     src/main.cpp
+
+    src/Application.h
     src/Application.cpp
+
+    src/Graphics.h
     src/Graphics.cpp
+
+    src/Physics/Particle.h
     src/Physics/Particle.cpp
+
+    src/Physics/Vec2.h
     src/Physics/Vec2.cpp
+
+    src/Physics/Constants.h
 )
 
 # Add executable target
