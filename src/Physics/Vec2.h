@@ -15,7 +15,7 @@ struct Vec2 {
     Vec2 Rotate(const float angle) const; // v1.Rotate(angle)
 
     float Magnitude() const;        // v1.Magnitude()
-    float MagnitudeSquared() const; // v1.MagnitudeSquared()
+    float MagnitudeSqr() const; // v1.MagnitudeSqr()
 
     Vec2& Normalize();       // v1.Normalize()
     Vec2 Normalized() const; // v1.Normalized()

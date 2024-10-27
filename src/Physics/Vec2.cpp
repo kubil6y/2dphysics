@@ -33,7 +33,7 @@ float Vec2::Magnitude() const {
     return sqrtf(x * x + y * y);
 }
 
-float Vec2::MagnitudeSquared() const {
+float Vec2::MagnitudeSqr() const {
     return (x * x + y * y);
 }
 

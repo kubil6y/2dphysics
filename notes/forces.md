@@ -42,10 +42,27 @@ k = constant
 Ff = μ * N * -v
 
 μ = (mu) is the coefficient of friction
-N = normal force
+N = Normal force
 v = Negative direction of unit vector
 
 Simplified for game dev:
 
 Ff = k * -v
+```
+
+---
+
+## Gravitational Attraction
+
+- An object is falling is just "our" experience of gravity.
+- As the earth pulls an object towards it due to gravitational force, the object pulls the earth as well.
+- Every object with mass exerts a gravitational force on every other object.
+
+```
+Fg = G * (m1 * m2) / d^2
+
+Fg = The gravitational force between two masses
+G = The gravitational constant G ≈ 6.674 × 10^(-11) N(m/kg)^2
+m = m1 and m2 are the masses of th two objects
+d = The distance between the centers of the two masses
 ```
