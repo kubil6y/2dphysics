@@ -10,9 +10,9 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Particle* smallBall = new Particle(50, 100, 1.f);
-    smallBall->radius = 4;
-    particles.push_back(smallBall);
+    // Particle* smallBall = new Particle(50, 100, 1.f);
+    // smallBall->radius = 4;
+    // particles.push_back(smallBall);
 
     Particle* bigBall = new Particle(150, 100, 3.f);
     bigBall->radius = 12;
@@ -63,15 +63,27 @@ void Application::Input() {
                 pushForce.x = 0.f;
             }
             break;
-
+        case SDL_MOUSEMOTION:
+            mouseCursor.x = event.motion.x;
+            mouseCursor.y = event.motion.y;
         case SDL_MOUSEBUTTONDOWN:
-            if (event.button.button == SDL_BUTTON_LEFT) {
-                int x = 0.f;
-                int y = 0.f;
+            if (!leftMouseButtonDown &&
+                event.button.button == SDL_BUTTON_LEFT) {
+                leftMouseButtonDown = true;
+                int x, y;
                 SDL_GetMouseState(&x, &y);
-                Particle* p = new Particle(x, y, 1.f);
-                p->radius = 4.f;
-                particles.push_back(p);
+                mouseCursor.x = x;
+                mouseCursor.y = y;
+            }
+            break;
+        case SDL_MOUSEBUTTONUP:
+            if (leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
+                leftMouseButtonDown = false;
+                Vec2 impulseDir =
+                    (particles[0]->position - mouseCursor).Normalized();
+                float impulseMagnitude =
+                    (particles[0]->position - mouseCursor).Magnitude() * 5.f;
+                particles[0]->velocity = impulseDir * impulseMagnitude;
             }
             break;
         }
@@ -93,15 +105,10 @@ void Application::Update() {
 
     // Apply forces to particles
     for (auto particle : particles) {
-        Vec2 weight{0.f, particle->mass * 9.81f * PIXELS_PER_METER};
-        particle->AddForce(weight);
         particle->AddForce(pushForce);
-
-        if (particle->position.y >= liquid.y) {
-            float dragK = 0.03f;
-            Vec2 drag = Force::GenerateDragForce(*particle, dragK);
-            particle->AddForce(drag);
-        }
+        float frictionK = 10.f * PIXELS_PER_METER;
+        Vec2 friction = Force::GenerateFrictionForce(*particle, frictionK);
+        particle->AddForce(friction);
     }
 
     // Integrate the acceleration and velocity to estimate new position
@@ -131,11 +138,7 @@ void Application::Update() {
 }
 
 void Application::Render() {
-    Graphics::ClearScreen(0xFF056263);
-
-    // Draw liquid
-    Graphics::DrawFillRect(liquid.x + liquid.w / 2.f, liquid.y + liquid.h / 2.f,
-                           liquid.w, liquid.h, 0XFF6E1713);
+    Graphics::ClearScreen(0X2A4B3A);
 
     for (auto particle : particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y,

@@ -31,3 +31,21 @@ k = constant
 ```
 
 ---
+
+## Friction Force
+
+- Friction is a contact force that resists sliding between surfaces.
+- **Kinetic friction** is the friction force when an object is sliding (moving) along a surface. Direction is opposite of the object's sliding direction and is parallel to the contact surface.
+- **Static friction** is the friction force that prevents an object from sliding (moving) along a surface. Direction stops the object from sliding against another surface and is parallel to the contact surface.
+
+```
+Ff = μ * N * -v
+
+μ = (mu) is the coefficient of friction
+N = normal force
+v = Negative direction of unit vector
+
+Simplified for game dev:
+
+Ff = k * -v
+```

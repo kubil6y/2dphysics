@@ -22,6 +22,8 @@ private:
 
     std::vector<Particle*> particles;
     Vec2 pushForce = {0.f, 0.f};
+    Vec2 mouseCursor = {0.f, 0.f};
+    bool leftMouseButtonDown = false;
 
     // TODO: create liquid
     SDL_Rect liquid;
