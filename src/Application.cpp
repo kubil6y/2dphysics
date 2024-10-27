@@ -9,9 +9,7 @@ void Application::Setup() {
     running = Graphics::OpenWindow();
 
     particle = new Particle(50, 100, 1.f);
-    particle->acceleration.x = 2.f * PIXELS_PER_METER;
-    particle->acceleration.y = 2.f * PIXELS_PER_METER;
-    particle->radius = 10;
+    particle->radius = 4;
 }
 
 void Application::Input() {
@@ -42,6 +40,9 @@ void Application::Update() {
     }
     timePreviousFrame = SDL_GetTicks();
 
+    // Apply wind force
+    Vec2 wind{0.2f * PIXELS_PER_METER, 0.f};
+    particle->AddForce(wind);
     particle->Integrate(deltaTime);
 
     // Keep in boundaries

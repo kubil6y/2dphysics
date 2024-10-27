@@ -3,8 +3,6 @@
 - The derivative of position is velocity
 - The derivative of velocity is acceleration
 
----
-
 ## Integration Techniques
 
 1. Explicit Euler:
@@ -29,5 +27,3 @@ This Runge-Kutta is a family of integrations, named after German physicists Carl
 | Implicit Euler | High             | Moderate | Moderate           |
 | Verlet         | Moderate to High | Moderate | Low to Moderate    |
 | RK4            | High             | High     | High               |
-
----
