@@ -16,7 +16,7 @@ Particle::~Particle() {
 void Particle::Integrate(float deltaTime) {
     // Find the acceleration based on the forces
     // that are being applied and the mass
-    acceleration = sumForces * invMass;
+    acceleration = sumForces * invMass; // a = F/m
 
     // Explicit Euler integration for updating position and
     // velocity using current acceleration

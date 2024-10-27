@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Physics/Constants.h"
+#include "Physics/Force.h"
 
 bool Application::IsRunning() {
     return running;
@@ -15,6 +16,11 @@ void Application::Setup() {
     Particle* bigBall = new Particle(150, 100, 3.f);
     bigBall->radius = 12;
     particles.push_back(bigBall);
+
+    liquid.x = 0.f;
+    liquid.y = Graphics::Height() / 2.f;
+    liquid.w = Graphics::Width();
+    liquid.h = Graphics::Height();
 }
 
 void Application::Input() {
@@ -28,31 +34,31 @@ void Application::Input() {
             if (event.key.keysym.sym == SDLK_ESCAPE) {
                 running = false;
             };
-            if (event.key.keysym.sym == SDLK_UP) {
+            if (event.key.keysym.sym == SDLK_w) {
                 pushForce.y = -50 * PIXELS_PER_METER;
             }
-            if (event.key.keysym.sym == SDLK_DOWN) {
+            if (event.key.keysym.sym == SDLK_s) {
                 pushForce.y = 50 * PIXELS_PER_METER;
             }
-            if (event.key.keysym.sym == SDLK_RIGHT) {
+            if (event.key.keysym.sym == SDLK_d) {
                 pushForce.x = 50 * PIXELS_PER_METER;
             }
-            if (event.key.keysym.sym == SDLK_LEFT) {
+            if (event.key.keysym.sym == SDLK_a) {
                 pushForce.x = -50 * PIXELS_PER_METER;
             }
             break;
 
         case SDL_KEYUP:
-            if (event.key.keysym.sym == SDLK_UP) {
+            if (event.key.keysym.sym == SDLK_w) {
                 pushForce.y = 0.f;
             }
-            if (event.key.keysym.sym == SDLK_DOWN) {
+            if (event.key.keysym.sym == SDLK_s) {
                 pushForce.y = 0.f;
             }
-            if (event.key.keysym.sym == SDLK_RIGHT) {
+            if (event.key.keysym.sym == SDLK_d) {
                 pushForce.x = 0.f;
             }
-            if (event.key.keysym.sym == SDLK_LEFT) {
+            if (event.key.keysym.sym == SDLK_a) {
                 pushForce.x = 0.f;
             }
             break;
@@ -73,23 +79,22 @@ void Application::Update() {
     }
     timePreviousFrame = SDL_GetTicks();
 
-    // Apply wind force
+    // Apply forces to particles
     Vec2 wind{0.2f * PIXELS_PER_METER, 0.f};
-    for (auto particle : particles) {
-        particle->AddForce(wind);
-    }
-
-    // Apply push force
-    for (auto particle : particles) {
-        particle->AddForce(pushForce);
-    }
-
-    // Apply gravity force
     for (auto particle : particles) {
         Vec2 grativy{0.f, particle->mass * 9.81f * PIXELS_PER_METER};
         particle->AddForce(grativy);
+        particle->AddForce(wind);
+        particle->AddForce(pushForce);
+
+        if (particle->position.y >= liquid.y) {
+            float dragK = 0.04f;
+            Vec2 drag = Force::GenerateDragForce(*particle, dragK);
+            particle->AddForce(drag);
+        }
     }
 
+    // Integrate the acceleration and velocity to estimate new position
     for (auto particle : particles) {
         particle->Integrate(deltaTime);
     }
@@ -117,6 +122,10 @@ void Application::Update() {
 
 void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
+
+    // Draw liquid
+    Graphics::DrawFillRect(liquid.x + liquid.w / 2.f, liquid.y + liquid.h / 2.f,
+                           liquid.w, liquid.h, 0XFF6E1713);
 
     for (auto particle : particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y,

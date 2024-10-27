@@ -18,7 +18,7 @@ struct Vec2 {
     float MagnitudeSquared() const; // v1.MagnitudeSquared()
 
     Vec2& Normalize();       // v1.Normalize()
-    Vec2 UnitVector() const; // v1.UnitVector()
+    Vec2 Normalized() const; // v1.Normalized()
     Vec2 Normal() const;     // n = v1.Normal()
 
     float Dot(const Vec2& v) const;   // v1.Dot(v2)

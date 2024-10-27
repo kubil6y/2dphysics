@@ -16,6 +16,8 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_GFX_I
 
 # Add executable target
 add_executable(${PROJECT_NAME} src/main.cpp
+    src/Physics/Constants.h
+
     src/Application.h
     src/Application.cpp
 
@@ -28,7 +30,8 @@ add_executable(${PROJECT_NAME} src/main.cpp
     src/Physics/Vec2.h
     src/Physics/Vec2.cpp
 
-    src/Physics/Constants.h
+    src/Physics/Force.h
+    src/Physics/Force.cpp
 )
 
 # Link libraries
