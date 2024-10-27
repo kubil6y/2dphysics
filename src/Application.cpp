@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Physics/Constants.h"
 #include "Physics/Force.h"
+#include "Physics/Particle.h"
 
 bool Application::IsRunning() {
     return running;
@@ -62,6 +63,17 @@ void Application::Input() {
                 pushForce.x = 0.f;
             }
             break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                int x = 0.f;
+                int y = 0.f;
+                SDL_GetMouseState(&x, &y);
+                Particle* p = new Particle(x, y, 1.f);
+                p->radius = 4.f;
+                particles.push_back(p);
+            }
+            break;
         }
     }
 }
@@ -74,21 +86,19 @@ void Application::Update() {
     }
 
     float deltaTime = (SDL_GetTicks() - timePreviousFrame) / 1000.f;
-    if (deltaTime > 0.016) {
+    if (deltaTime > 0.016f) {
         deltaTime = 0.016f;
     }
     timePreviousFrame = SDL_GetTicks();
 
     // Apply forces to particles
-    Vec2 wind{0.2f * PIXELS_PER_METER, 0.f};
     for (auto particle : particles) {
-        Vec2 grativy{0.f, particle->mass * 9.81f * PIXELS_PER_METER};
-        particle->AddForce(grativy);
-        particle->AddForce(wind);
+        Vec2 weight{0.f, particle->mass * 9.81f * PIXELS_PER_METER};
+        particle->AddForce(weight);
         particle->AddForce(pushForce);
 
         if (particle->position.y >= liquid.y) {
-            float dragK = 0.04f;
+            float dragK = 0.03f;
             Vec2 drag = Force::GenerateDragForce(*particle, dragK);
             particle->AddForce(drag);
         }
