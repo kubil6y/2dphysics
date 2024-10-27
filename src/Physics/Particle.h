@@ -9,6 +9,7 @@ struct Particle {
     Vec2 acceleration;
     Vec2 sumForces;
     float mass;
+    float invMass;
 
     Particle(float x, float y, float mass);
     ~Particle();
@@ -16,4 +17,5 @@ struct Particle {
     void Integrate(float deltaTime);
     void AddForce(const Vec2& force);
     void ClearForces();
+    void SetMass(float mass);
 };
