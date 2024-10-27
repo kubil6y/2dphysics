@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16.3)
-project(MySDLProject LANGUAGES CXX)
+project(physics_engine LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,10 +14,8 @@ pkg_search_module(SDL2_GFX REQUIRED SDL2_gfx)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_GFX_INCLUDE_DIRS})
 
-# Specify source files
-set(SOURCES
-    src/main.cpp
-
+# Add executable target
+add_executable(${PROJECT_NAME} src/main.cpp
     src/Application.h
     src/Application.cpp
 
@@ -33,8 +31,5 @@ set(SOURCES
     src/Physics/Constants.h
 )
 
-# Add executable target
-add_executable(app ${SOURCES})
-
 # Link libraries
-target_link_libraries(app ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_GFX_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_GFX_LIBRARIES})
