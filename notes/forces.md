@@ -1,4 +1,4 @@
-## Forces
+# Forces
 
 - A particle will **accelerate** based on the **forces** that are acting on it.
 - Forces may come from different sources depending on the kind of simulation. It can be _gravity, wind, magnetism_ etc. Or it can be a force between particies, such as attraction or repulsion.
@@ -52,7 +52,7 @@ Ff = k * -v
 
 ---
 
-## Gravitational Attraction
+## Gravitational Attraction Force
 
 - An object is falling is just "our" experience of gravity.
 - As the earth pulls an object towards it due to gravitational force, the object pulls the earth as well.
@@ -65,4 +65,20 @@ Fg = The gravitational force between two masses
 G = The gravitational constant G ≈ 6.674 × 10^(-11) N(m/kg)^2
 m = m1 and m2 are the masses of th two objects
 d = The distance between the centers of the two masses
+```
+
+---
+
+## Spring Force
+
+The spring force is calculated according to Hooke's law, which states that, _"The force of the spring is proportional to the displacement of the spring (extended or compressed)."_
+
+```
+F = -kx
+
+- F is the restoring force exerted by the spring (in newtons, N),
+- k is the spring constant (in newtons per meter, N/m), which measures the stiffness of the spring,
+- x is the displacement of the spring from its equilibrium position (in meters, m), where positive or negative values indicate stretching or compression.
+
+The negative sign shows that the spring force always acts in the direction opposite to the displacement, working to return the spring to equilibrium.
 ```

@@ -2,8 +2,8 @@
 
 #include "Graphics.h"
 #include "Physics/Particle.h"
-#include <vector>
 #include <SDL.h>
+#include <vector>
 
 class Application {
 public:
@@ -25,6 +25,7 @@ private:
     bool leftMouseButtonDown = false;
     std::vector<Particle*> particles;
 
-    // TODO: create liquid
-    SDL_Rect liquid;
+    Vec2 anchor;
+    float springK = 100.f;
+    float restLength = 400.f;
 };

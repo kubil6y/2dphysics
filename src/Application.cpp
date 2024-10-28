@@ -10,18 +10,11 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Particle* smallBall = new Particle(200.f, 200.f, 1.f);
-    smallBall->radius = 6;
-    particles.push_back(smallBall);
-
-    Particle* bigBall = new Particle(500.f, 500.f, 20.f);
-    bigBall->radius = 20;
-    particles.push_back(bigBall);
-
-    // liquid.x = 0.f;
-    // liquid.y = Graphics::Height() / 2.f;
-    // liquid.w = Graphics::Width();
-    // liquid.h = Graphics::Height();
+    anchor = {Graphics::Width() / 2.f, 30.f};
+    Particle* bob =
+        new Particle(Graphics::Width() / 2.f, Graphics::Height() / 2.f, 2.f);
+    bob->radius = 10.f;
+    particles.push_back(bob);
 }
 
 void Application::Input() {
@@ -106,16 +99,17 @@ void Application::Update() {
     // Apply forces to particles
     for (auto particle : particles) {
         particle->AddForce(pushForce);
-        Vec2 friction = Force::GenerateFrictionForce(*particle, 20.f);
-        particle->AddForce(friction);
+        Vec2 drag = Force::GenerateFrictionForce(*particle, .01f);
+        particle->AddForce(drag);
+
+        Vec2 weight = {0.f, particle->mass * 9.81f * PIXELS_PER_METER};
+        particle->AddForce(weight);
     }
 
-    // Apply gravitational force to our two planets
-    Vec2 attraction =
-        Force::GenerateGravitationalForce(*particles[0], *particles[1], 1000.f, 5.f, 100.f);
-    printf("%f,%f\n", attraction.x, attraction.y);
-    particles[0]->AddForce(attraction);
-    particles[1]->AddForce(-attraction);
+    // Apply spring force to the particle connected to the anchor
+    Vec2 springForce =
+        Force::GenerateSpringForce(*particles[0], anchor, restLength, springK);
+    particles[0]->AddForce(springForce);
 
     // Integrate the acceleration and velocity to estimate new position
     for (auto particle : particles) {
@@ -146,11 +140,15 @@ void Application::Update() {
 void Application::Render() {
     Graphics::ClearScreen(0xFF0F0721);
 
-    Graphics::DrawFillCircle(particles[0]->position.x, particles[0]->position.y,
-                             particles[0]->radius, 0XFFAA3300);
-    Graphics::DrawFillCircle(particles[1]->position.x, particles[1]->position.y,
-                             particles[1]->radius, 0xFF00FFFF);
+    // Draw spring
+    Graphics::DrawLine(anchor.x, anchor.y, particles[0]->position.x,
+                       particles[0]->position.y, 0xFF313131);
 
+    // Draw anchor
+    Graphics::DrawFillCircle(anchor.x, anchor.y, 5.f, 0xFF001155);
+    // Draw bob
+    Graphics::DrawFillCircle(particles[0]->position.x, particles[0]->position.y,
+                             particles[0]->radius, 0XFFFFFFFF);
     Graphics::RenderFrame();
 }
 

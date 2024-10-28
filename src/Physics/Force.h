@@ -10,4 +10,5 @@ public:
     static Vec2 GenerateGravitationalForce(const Particle& a, const Particle& b,
                                        float G, float minDistanceSqr,
                                        float maxDistanceSqr);
+    static Vec2 GenerateSpringForce(const Particle& particle, Vec2 anchor, float restLength, float k);
 };
