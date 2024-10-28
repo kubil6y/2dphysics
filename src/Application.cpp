@@ -10,14 +10,20 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    anchor = {Graphics::Width() / 2.f, 30.f};
+    Particle* a = new Particle(100.f, 100.f, 1.f);
+    Particle* b = new Particle(300.f, 100.f, 1.f);
+    Particle* c = new Particle(300.f, 300.f, 1.f);
+    Particle* d = new Particle(100.f, 300.f, 1.f);
 
-    for (int i = 0; i < NUM_PARTICLES; ++i) {
-        Particle* particle =
-            new Particle(anchor.x, anchor.y + i * restLength, 2.f);
-        particle->radius = 6.f;
-        particles.push_back(particle);
-    }
+    a->radius = 6.f;
+    b->radius = 6.f;
+    c->radius = 6.f;
+    d->radius = 6.f;
+
+    particles.push_back(a);
+    particles.push_back(b);
+    particles.push_back(c);
+    particles.push_back(d);
 }
 
 void Application::Input() {
@@ -108,27 +114,38 @@ void Application::Update() {
     for (auto particle : particles) {
         particle->AddForce(pushForce);
 
-        Vec2 drag = Force::GenerateDragForce(*particle, .02f);
+        Vec2 drag = Force::GenerateDragForce(*particle, .003f);
         particle->AddForce(drag);
 
         Vec2 weight = {0.f, particle->mass * 9.81f * PIXELS_PER_METER};
         particle->AddForce(weight);
     }
 
-    // Apply spring force to the particle connected to the anchor
-    Vec2 springForce =
-        Force::GenerateSpringForce(*particles[0], anchor, restLength, springK);
-    particles[0]->AddForce(springForce);
+    // clang-format off
+    Vec2 ab = Force::GenerateSpringForce(*particles[0], *particles[1], restLength, springK);
+    particles[0]->AddForce(ab);
+    particles[1]->AddForce(-ab);
 
-    for (int i = 1; i < NUM_PARTICLES; i++) {
-        int currParticle = i;
-        int prevParticle = i - 1;
-        Vec2 springForce = Force::GenerateSpringForce(*particles[currParticle],
-                                                      *particles[prevParticle],
-                                                      restLength, springK);
-        particles[currParticle]->AddForce(springForce);
-        particles[prevParticle]->AddForce(-springForce);
-    }
+    Vec2 bc = Force::GenerateSpringForce(*particles[1], *particles[2], restLength, springK);
+    particles[1]->AddForce(bc);
+    particles[2]->AddForce(-bc);
+
+    Vec2 cd = Force::GenerateSpringForce(*particles[2], *particles[3], restLength, springK);
+    particles[2]->AddForce(cd);
+    particles[3]->AddForce(-cd);
+
+    Vec2 da = Force::GenerateSpringForce(*particles[3], *particles[0], restLength, springK);
+    particles[3]->AddForce(da);
+    particles[0]->AddForce(-da);
+
+    Vec2 ac = Force::GenerateSpringForce(*particles[0], *particles[2], restLength, springK);
+    particles[0]->AddForce(ac);
+    particles[2]->AddForce(-ac);
+
+    Vec2 bd = Force::GenerateSpringForce(*particles[1], *particles[3], restLength, springK);
+    particles[1]->AddForce(bd);
+    particles[3]->AddForce(-bd);
+    // clang-format on
 
     // Integrate the acceleration and velocity to estimate new position
     for (auto particle : particles) {
@@ -165,19 +182,14 @@ void Application::Render() {
                            mouseCursor.y, 0xFF313131);
     }
 
-    Graphics::DrawFillCircle(anchor.x, anchor.y, 5, 0xFF001155);
-    Graphics::DrawLine(anchor.x, anchor.y, particles[0]->position.x,
-                       particles[0]->position.y, 0xFF313131);
-
-    for (int i = 0; i < NUM_PARTICLES-1; ++i) {
-        int currParticle = i;
-        int nextParticle = i + 1;
-        // Draw spring
-        Graphics::DrawLine(particles[currParticle]->position.x,
-                           particles[currParticle]->position.y,
-                           particles[nextParticle]->position.x,
-                           particles[nextParticle]->position.y, 0xFF00FF00);
-    }
+    // clang-format off
+    Graphics::DrawLine(particles[0]->position.x, particles[0]->position.y,particles[1]->position.x,particles[1]->position.y, 0xFF313131);
+    Graphics::DrawLine(particles[1]->position.x, particles[1]->position.y,particles[2]->position.x,particles[2]->position.y, 0xFF313131);
+    Graphics::DrawLine(particles[2]->position.x, particles[2]->position.y,particles[3]->position.x,particles[3]->position.y, 0xFF313131);
+    Graphics::DrawLine(particles[3]->position.x, particles[3]->position.y,particles[0]->position.x,particles[0]->position.y, 0xFF313131);
+    Graphics::DrawLine(particles[0]->position.x, particles[0]->position.y,particles[2]->position.x,particles[2]->position.y, 0xFF313131);
+    Graphics::DrawLine(particles[1]->position.x, particles[1]->position.y,particles[3]->position.x,particles[3]->position.y, 0xFF313131);
+    // clang-format on
 
     for (auto particle : particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y,

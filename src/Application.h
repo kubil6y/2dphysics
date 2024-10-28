@@ -25,8 +25,7 @@ private:
     bool leftMouseButtonDown = false;
     std::vector<Particle*> particles;
 
-    Vec2 anchor;
-    float springK = 300.f;
-    float restLength = 15.f;
-    const int NUM_PARTICLES = 15;
+    float springK = 1500.f;
+    float restLength = 200.f;
+    const int NUM_PARTICLES = 4;
 };
