@@ -8,6 +8,8 @@ struct Body {
     Vec2 velocity;
     Vec2 acceleration;
 
+    int radius;
+
     // Forces
     Vec2 sumForces;
 
@@ -15,7 +17,7 @@ struct Body {
     float mass;
     float invMass;
 
-    int radius;
+    Shape* shape = nullptr;
 
     Body(const Shape& shape, float x, float y, float m);
     ~Body();

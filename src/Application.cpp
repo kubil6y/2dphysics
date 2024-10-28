@@ -10,9 +10,9 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    // Body* body = new Body(100.f, 100.f, 1.f);
-    // body->radius = 6.f;
-    // bodies.push_back(body);
+    Body* body = new Body{CircleShape{50.f}, 100.f, 100.f, 1.f};
+    body->radius = 10.f; // TODO
+    bodies.push_back(body);
 }
 
 void Application::Input() {
@@ -139,7 +139,7 @@ void Application::Render() {
 
     for (auto body : bodies) {
         Graphics::DrawFillCircle(body->position.x, body->position.y,
-                                 body->radius, 0XFFEEBB00);
+                                 body->radius, 0XFFFFFFFF);
     }
 
     Graphics::RenderFrame();

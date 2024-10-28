@@ -3,14 +3,18 @@
 
 Body::Body(const Shape& shape, float x, float y, float m)
     : position{Vec2{x, y}}, mass{m} {
+    // take reference to copy so we can use stack values
+    // in constuctor ex: new Body(CircleShape()...)
+    this->shape = shape.Clone();
+
     if (mass != 0) {
-        std::cerr << "zero mass!" << std::endl;
         invMass = 1.f / mass;
     }
     std::cout << "Body constructor called!" << std::endl;
 }
 
 Body::~Body() {
+    delete shape;
     std::cout << "Body destructor called!" << std::endl;
 }
 
