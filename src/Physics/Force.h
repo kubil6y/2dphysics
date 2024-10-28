@@ -11,4 +11,5 @@ public:
                                        float G, float minDistanceSqr,
                                        float maxDistanceSqr);
     static Vec2 GenerateSpringForce(const Particle& particle, Vec2 anchor, float restLength, float k);
+    static Vec2 GenerateSpringForce(const Particle& a, const Particle& b, float restLength, float k);
 };

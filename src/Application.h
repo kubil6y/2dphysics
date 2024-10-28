@@ -26,6 +26,7 @@ private:
     std::vector<Particle*> particles;
 
     Vec2 anchor;
-    float springK = 100.f;
-    float restLength = 400.f;
+    float springK = 300.f;
+    float restLength = 15.f;
+    const int NUM_PARTICLES = 15;
 };
