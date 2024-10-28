@@ -17,6 +17,10 @@ One of the simplest and aarguably the most popular integration technique for **g
 
 Provides greater accuracy than Implicit Euler and less memory usage when simulating a **large number of particles**.
 
+Verlet integration is useful because it directly relates the force to the position, rather than solving the problem using velocities... Sometimes, instability can arise when multiple constraining forces act on each particle.
+
+If you want to simulate cloth, fluid things. Verlet integration is a better choice.
+
 4. Runge-Kutta Integration:
 
 This Runge-Kutta is a family of integrations, named after German physicists Carl Runge and Martin Kutta. The RK4 is the most popular implementation. It accumulates error is on the order of the **fourth** derivative. This makes RK4 very accurate. Much more accurate than Euler, which is only first order.

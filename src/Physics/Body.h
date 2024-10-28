@@ -2,7 +2,7 @@
 
 #include "Vec2.h"
 
-struct Particle {
+struct Body {
     int radius;
     Vec2 position;
     Vec2 velocity;
@@ -11,8 +11,8 @@ struct Particle {
     float mass;
     float invMass;
 
-    Particle(float x, float y, float mass);
-    ~Particle();
+    Body(float x, float y, float mass);
+    ~Body();
 
     void Integrate(float deltaTime);
     void AddForce(const Vec2& force);

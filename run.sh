@@ -1,4 +1,4 @@
 #! /bin/bash
 
-./compile.sh
-./build/physics_engine
+./build.sh
+./dist/physics_engine

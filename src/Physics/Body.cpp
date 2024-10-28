@@ -1,19 +1,18 @@
-#include "Particle.h"
+#include "Body.h"
 #include <iostream>
 
-Particle::Particle(float x, float y, float mass)
-    : position{Vec2{x, y}}, mass{mass} {
+Body::Body(float x, float y, float mass) : position{Vec2{x, y}}, mass{mass} {
     if (mass != 0) {
         invMass = 1.f / mass;
     }
-    std::cout << "Particle constructor called!" << std::endl;
+    std::cout << "Body constructor called!" << std::endl;
 }
 
-Particle::~Particle() {
-    std::cout << "Particle destructor called!" << std::endl;
+Body::~Body() {
+    std::cout << "Body destructor called!" << std::endl;
 }
 
-void Particle::Integrate(float deltaTime) {
+void Body::Integrate(float deltaTime) {
     // Find the acceleration based on the forces
     // that are being applied and the mass
     acceleration = sumForces * invMass; // a = F/m
@@ -26,15 +25,15 @@ void Particle::Integrate(float deltaTime) {
     ClearForces();
 }
 
-void Particle::AddForce(const Vec2& force) {
+void Body::AddForce(const Vec2& force) {
     sumForces += force;
 }
 
-void Particle::ClearForces() {
+void Body::ClearForces() {
     sumForces *= 0;
 }
 
-void Particle::SetMass(float mass) {
+void Body::SetMass(float mass) {
     this->mass = mass;
     if (mass != 0) {
         invMass = 1.f / mass;

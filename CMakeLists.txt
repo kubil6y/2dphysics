@@ -24,8 +24,8 @@ add_executable(${PROJECT_NAME} src/main.cpp
     src/Graphics.h
     src/Graphics.cpp
 
-    src/Physics/Particle.h
-    src/Physics/Particle.cpp
+    src/Physics/Body.h
+    src/Physics/Body.cpp
 
     src/Physics/Vec2.h
     src/Physics/Vec2.cpp
@@ -36,3 +36,9 @@ add_executable(${PROJECT_NAME} src/main.cpp
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_GFX_LIBRARIES})
+
+add_custom_target(copy_compile_commands ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+    DEPENDS ${PROJECT_NAME}
+)

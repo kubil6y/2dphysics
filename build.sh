@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Create build directory if it doesn't exist
-if [ ! -d "build" ]; then
-    echo "Creating build directory..."
-    mkdir build
+# Create dist directory if it doesn't exist
+if [ ! -d "dist" ]; then
+    echo "Creating dist directory..."
+    mkdir dist
 fi
 
-# Change to the build directory
-cd build
+# Change to the dist directory
+cd dist
 
 # Run CMake to configure the project
 echo "Configuring the project with CMake..."
