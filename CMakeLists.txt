@@ -32,6 +32,9 @@ add_executable(${PROJECT_NAME} src/main.cpp
 
     src/Physics/Force.h
     src/Physics/Force.cpp
+
+    src/Physics/Shape.h
+    src/Physics/Shape.cpp
 )
 
 # Link libraries

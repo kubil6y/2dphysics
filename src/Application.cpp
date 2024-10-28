@@ -10,9 +10,9 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Body* body = new Body(100.f, 100.f, 1.f);
-    body->radius = 6.f;
-    bodies.push_back(body);
+    // Body* body = new Body(100.f, 100.f, 1.f);
+    // body->radius = 6.f;
+    // bodies.push_back(body);
 }
 
 void Application::Input() {

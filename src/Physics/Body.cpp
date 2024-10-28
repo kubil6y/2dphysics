@@ -1,8 +1,10 @@
 #include "Body.h"
 #include <iostream>
 
-Body::Body(float x, float y, float mass) : position{Vec2{x, y}}, mass{mass} {
+Body::Body(const Shape& shape, float x, float y, float m)
+    : position{Vec2{x, y}}, mass{m} {
     if (mass != 0) {
+        std::cerr << "zero mass!" << std::endl;
         invMass = 1.f / mass;
     }
     std::cout << "Body constructor called!" << std::endl;

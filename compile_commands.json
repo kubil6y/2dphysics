@@ -28,5 +28,10 @@
   "directory": "/home/kubilay/dev/cpp/2dphysics/dist",
   "command": "/usr/bin/c++   -I/usr/include/SDL2    -std=c++17 -o CMakeFiles/physics_engine.dir/src/Physics/Force.cpp.o -c /home/kubilay/dev/cpp/2dphysics/src/Physics/Force.cpp",
   "file": "/home/kubilay/dev/cpp/2dphysics/src/Physics/Force.cpp"
+},
+{
+  "directory": "/home/kubilay/dev/cpp/2dphysics/dist",
+  "command": "/usr/bin/c++   -I/usr/include/SDL2    -std=c++17 -o CMakeFiles/physics_engine.dir/src/Physics/Shape.cpp.o -c /home/kubilay/dev/cpp/2dphysics/src/Physics/Shape.cpp",
+  "file": "/home/kubilay/dev/cpp/2dphysics/src/Physics/Shape.cpp"
 }
 ]
