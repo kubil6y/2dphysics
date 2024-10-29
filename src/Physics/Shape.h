@@ -43,6 +43,7 @@ struct PolygonShape : public Shape {
 struct BoxShape : public Shape {
     float width;
     float height;
+    std::vector<Vec2> vertices;
 
     BoxShape() = default;
     BoxShape(float width, float height);

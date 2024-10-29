@@ -1,8 +1,6 @@
 #include "Application.h"
 #include "Physics/Body.h"
 #include "Physics/Constants.h"
-#include "Physics/Force.h"
-#include <iostream>
 
 bool Application::IsRunning() {
     return running;
@@ -11,7 +9,8 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Body* body = new Body{CircleShape{50.f}, 100.f, 100.f, 1.f};
+    Body* body = new Body{BoxShape{200.f, 100.f}, Graphics::Width() / 2.f,
+                          Graphics::Height() / 2.f, 1.f};
     bodies.push_back(body);
 }
 
@@ -98,11 +97,11 @@ void Application::Update() {
     for (auto body : bodies) {
         // body->AddForce(pushForce);
 
-        Vec2 weight = {0.f, body->mass * 9.81f * PIXELS_PER_METER};
-        body->AddForce(weight);
+        // Vec2 weight = {0.f, body->mass * 9.81f * PIXELS_PER_METER};
+        // body->AddForce(weight);
 
-        float torque = 30.f;
-        body->AddTorque(torque);
+        // float torque = 30.f;
+        // body->AddTorque(torque);
     }
 
     // Integrate the acceleration and velocity to estimate new position
@@ -112,7 +111,11 @@ void Application::Update() {
 
     // Bounds correction
     for (auto body : bodies) {
-        if (body->shape->GetType() == ShapeType::Circle) {
+        switch (body->shape->GetType()) {
+        case ShapeType::Box: {
+            break;
+        }
+        case ShapeType::Circle: {
             CircleShape* circleShape = static_cast<CircleShape*>(body->shape);
             if (body->position.x - circleShape->radius <= 0) {
                 body->position.x = circleShape->radius;
@@ -130,8 +133,11 @@ void Application::Update() {
                 body->position.y = Graphics::Height() - circleShape->radius;
                 body->velocity.y *= -0.9;
             }
-        } else {
-            // TODO check boundaries of others
+            break;
+        }
+        case ShapeType::Polygon: {
+            break;
+        }
         }
     }
 }
@@ -145,12 +151,23 @@ void Application::Render() {
     }
 
     for (auto body : bodies) {
-        if (body->shape->GetType() == ShapeType::Circle) {
+        switch (body->shape->GetType()) {
+        case ShapeType::Box: {
+            BoxShape* boxShape = static_cast<BoxShape*>(body->shape);
+            Graphics::DrawPolygon(body->position.x, body->position.y,
+                                      boxShape->vertices, 0XFFFFFFFF);
+            break;
+        }
+        case ShapeType::Circle: {
             CircleShape* circleShape = static_cast<CircleShape*>(body->shape);
             Graphics::DrawCircle(body->position.x, body->position.y,
-                                 circleShape->radius, body->rotation, 0XFFFFFFFF);
-        } else {
-            // TODO draw other types
+                                 circleShape->radius, body->rotation,
+                                 0XFFFFFFFF);
+            break;
+        }
+        case ShapeType::Polygon: {
+            break;
+        };
         }
     }
 

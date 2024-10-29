@@ -44,7 +44,16 @@ Shape* PolygonShape::Clone() const {
     return new PolygonShape{vertices};
 }
 
-BoxShape::BoxShape(float width, float height) : width{width}, height{height} {
+BoxShape::BoxShape(float width, float height) {
+    this->width = width;
+    this->height = height;
+
+    // Center of mass is in the middle
+    // Load vertices of the box polygon clockwise
+    vertices.push_back(Vec2{-width / 2.f, -height / 2.f});
+    vertices.push_back(Vec2{width / 2.f, -height / 2.f});
+    vertices.push_back(Vec2{width / 2.f, height / 2.f});
+    vertices.push_back(Vec2{-width / 2.f, height / 2.f});
     std::cout << "BoxShape constructor called" << std::endl;
 }
 
