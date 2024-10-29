@@ -11,7 +11,6 @@ void Application::Setup() {
     running = Graphics::OpenWindow();
 
     Body* body = new Body{CircleShape{50.f}, 100.f, 100.f, 1.f};
-    body->radius = 10.f; // TODO
     bodies.push_back(body);
 }
 
@@ -112,19 +111,26 @@ void Application::Update() {
 
     // Bounds correction
     for (auto body : bodies) {
-        if (body->position.x - body->radius <= 0) {
-            body->position.x = body->radius;
-            body->velocity.x *= -0.9;
-        } else if (body->position.x + body->radius >= Graphics::Width()) {
-            body->position.x = Graphics::Width() - body->radius;
-            body->velocity.x *= -0.9;
-        }
-        if (body->position.y - body->radius <= 0) {
-            body->position.y = body->radius;
-            body->velocity.y *= -0.9;
-        } else if (body->position.y + body->radius >= Graphics::Height()) {
-            body->position.y = Graphics::Height() - body->radius;
-            body->velocity.y *= -0.9;
+        if (body->shape->GetType() == ShapeType::Circle) {
+            CircleShape* circleShape = static_cast<CircleShape*>(body->shape);
+            if (body->position.x - circleShape->radius <= 0) {
+                body->position.x = circleShape->radius;
+                body->velocity.x *= -0.9;
+            } else if (body->position.x + circleShape->radius >=
+                       Graphics::Width()) {
+                body->position.x = Graphics::Width() - circleShape->radius;
+                body->velocity.x *= -0.9;
+            }
+            if (body->position.y - circleShape->radius <= 0) {
+                body->position.y = circleShape->radius;
+                body->velocity.y *= -0.9;
+            } else if (body->position.y + circleShape->radius >=
+                       Graphics::Height()) {
+                body->position.y = Graphics::Height() - circleShape->radius;
+                body->velocity.y *= -0.9;
+            }
+        } else {
+            // TODO check boundaries of others
         }
     }
 }
@@ -132,15 +138,24 @@ void Application::Update() {
 void Application::Render() {
     Graphics::ClearScreen(0xFF0F0721);
 
+    static float angle = 0.f;
+
     if (leftMouseButtonDown) {
         Graphics::DrawLine(bodies[0]->position.x, bodies[0]->position.y,
                            mouseCursor.x, mouseCursor.y, 0xFF313131);
     }
 
     for (auto body : bodies) {
-        Graphics::DrawFillCircle(body->position.x, body->position.y,
-                                 body->radius, 0XFFFFFFFF);
+        if (body->shape->GetType() == ShapeType::Circle) {
+            CircleShape* circleShape = static_cast<CircleShape*>(body->shape);
+            Graphics::DrawCircle(body->position.x, body->position.y,
+                                 circleShape->radius, angle, 0XFFFFFFFF);
+        } else {
+            // TODO draw other types
+        }
     }
+
+    angle += 0.01f;
 
     Graphics::RenderFrame();
 }

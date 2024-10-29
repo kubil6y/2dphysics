@@ -8,8 +8,6 @@ struct Body {
     Vec2 velocity;
     Vec2 acceleration;
 
-    int radius;
-
     // Forces
     Vec2 sumForces;
 
