@@ -87,9 +87,9 @@ void Application::Update() {
         SDL_Delay(timeToWait);
     }
 
-    float deltaTime = (SDL_GetTicks() - timePreviousFrame) / 1000.f;
-    if (deltaTime > 0.016f) {
-        deltaTime = 0.016f;
+    float dt = (SDL_GetTicks() - timePreviousFrame) / 1000.f;
+    if (dt > 0.016f) {
+        dt = 0.016f;
     }
     timePreviousFrame = SDL_GetTicks();
 
@@ -106,7 +106,7 @@ void Application::Update() {
 
     // Integrate the acceleration and velocity to estimate new position
     for (auto body : bodies) {
-        body->Integrate(deltaTime);
+        body->Integrate(dt);
     }
 
     // Bounds correction
