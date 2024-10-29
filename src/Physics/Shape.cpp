@@ -13,8 +13,9 @@ ShapeType CircleShape::GetType() const {
     return ShapeType::Circle;
 }
 
-float CircleShape::GetMomentOfIntertia() const {
-    return 0.f;
+float CircleShape::GetMomentOfInertia(float mass) const {
+    // I = 1/2 * r^2 * mass
+    return .5f * radius * radius * mass;
 }
 
 Shape* CircleShape::Clone() const {
@@ -34,7 +35,8 @@ ShapeType PolygonShape::GetType() const {
     return ShapeType::Polygon;
 }
 
-float PolygonShape::GetMomentOfIntertia() const {
+float PolygonShape::GetMomentOfInertia(float mass) const {
+    // TODO:
     return 0.f;
 }
 
@@ -54,8 +56,9 @@ ShapeType BoxShape::GetType() const {
     return ShapeType::Box;
 }
 
-float BoxShape::GetMomentOfIntertia() const {
-    return 0.f;
+float BoxShape::GetMomentOfInertia(float mass) const {
+    // I = 1/12 * (w^2 * h^2) * mass
+    return 0.08333 * (width * width * height * height) * mass;
 }
 
 Shape* BoxShape::Clone() const {

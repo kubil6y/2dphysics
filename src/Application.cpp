@@ -2,6 +2,7 @@
 #include "Physics/Body.h"
 #include "Physics/Constants.h"
 #include "Physics/Force.h"
+#include <iostream>
 
 bool Application::IsRunning() {
     return running;
@@ -95,13 +96,13 @@ void Application::Update() {
 
     // Apply forces to bodies
     for (auto body : bodies) {
-        body->AddForce(pushForce);
-
-        Vec2 drag = Force::GenerateDragForce(*body, .003f);
-        body->AddForce(drag);
+        // body->AddForce(pushForce);
 
         Vec2 weight = {0.f, body->mass * 9.81f * PIXELS_PER_METER};
         body->AddForce(weight);
+
+        float torque = 30.f;
+        body->AddTorque(torque);
     }
 
     // Integrate the acceleration and velocity to estimate new position
@@ -138,8 +139,6 @@ void Application::Update() {
 void Application::Render() {
     Graphics::ClearScreen(0xFF0F0721);
 
-    static float angle = 0.f;
-
     if (leftMouseButtonDown) {
         Graphics::DrawLine(bodies[0]->position.x, bodies[0]->position.y,
                            mouseCursor.x, mouseCursor.y, 0xFF313131);
@@ -149,13 +148,11 @@ void Application::Render() {
         if (body->shape->GetType() == ShapeType::Circle) {
             CircleShape* circleShape = static_cast<CircleShape*>(body->shape);
             Graphics::DrawCircle(body->position.x, body->position.y,
-                                 circleShape->radius, angle, 0XFFFFFFFF);
+                                 circleShape->radius, body->rotation, 0XFFFFFFFF);
         } else {
             // TODO draw other types
         }
     }
-
-    angle += 0.01f;
 
     Graphics::RenderFrame();
 }

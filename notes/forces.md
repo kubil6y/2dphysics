@@ -16,19 +16,22 @@ Note: Kinematics: velocity, acceleration but no forces...
 
 ```
 Drag Force (Fd) = 0.5 * Kd * A * ρ * ||v||^2 * -vdir
+```
 
-Fd = Drag force
-Kd = Drag coefficient (dimensionless)
-A = Cross-sectional area (in square meters)
-ρ = Density of the fluid (in kilograms per cubic meter)
-v = Velocity of the object relative to the fluid (in meters per second)
-vdir = Negative direction of unit vector
+- Fd = Drag force
+- Kd = Drag coefficient (dimensionless)
+- A = Cross-sectional area (in square meters)
+- ρ = Density of the fluid (in kilograms per cubic meter)
+- v = Velocity of the object relative to the fluid (in meters per second)
+- vdir = Negative direction of unit vector
 
 Simplified for game dev:
 
-Drag Force (Fd) = k * ||v||^2 * -vdir
-k = constant
 ```
+Drag Force (Fd) = k * ||v||^2 * -vdir
+```
+
+k = constant
 
 ---
 
@@ -40,13 +43,15 @@ k = constant
 
 ```
 Ff = μ * N * -v
+```
 
-μ = (mu) is the coefficient of friction
-N = Normal force
-v = Negative direction of unit vector
+- μ = (mu) is the coefficient of friction
+- N = Normal force
+- v = Negative direction of unit vector
 
 Simplified for game dev:
 
+```
 Ff = k * -v
 ```
 
@@ -60,12 +65,12 @@ Ff = k * -v
 
 ```
 Fg = G * (m1 * m2) / d^2
-
-Fg = The gravitational force between two masses
-G = The gravitational constant G ≈ 6.674 × 10^(-11) N(m/kg)^2
-m = m1 and m2 are the masses of th two objects
-d = The distance between the centers of the two masses
 ```
+
+- Fg = The gravitational force between two masses
+- G = The gravitational constant G ≈ 6.674 × 10^(-11) N(m/kg)^2
+- m = m1 and m2 are the masses of th two objects
+- d = The distance between the centers of the two masses
 
 ---
 
@@ -75,10 +80,10 @@ The spring force is calculated according to Hooke's law, which states that, _"Th
 
 ```
 F = -kx
+```
 
 - F is the restoring force exerted by the spring (in newtons, N),
 - k is the spring constant (in newtons per meter, N/m), which measures the stiffness of the spring,
 - x is the displacement of the spring from its equilibrium position (in meters, m), where positive or negative values indicate stretching or compression.
 
 The negative sign shows that the spring force always acts in the direction opposite to the displacement, working to return the spring to equilibrium.
-```

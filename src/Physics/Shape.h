@@ -12,7 +12,8 @@ enum class ShapeType {
 struct Shape {
     virtual ~Shape() = default;
     virtual ShapeType GetType() const = 0;
-    virtual float GetMomentOfIntertia() const = 0;
+    // Without mass (Body will handle the mass)
+    virtual float GetMomentOfInertia(float mass) const = 0; 
     virtual Shape* Clone() const = 0;
 };
 
@@ -23,7 +24,7 @@ struct CircleShape : public Shape {
     virtual ~CircleShape();
 
     ShapeType GetType() const override;
-    float GetMomentOfIntertia() const override;
+    float GetMomentOfInertia(float mass) const override;
     Shape* Clone() const override;
 };
 
@@ -35,7 +36,7 @@ struct PolygonShape : public Shape {
     virtual ~PolygonShape();
 
     ShapeType GetType() const override;
-    float GetMomentOfIntertia() const override;
+    float GetMomentOfInertia(float mass) const override;
     Shape* Clone() const override;
 };
 
@@ -48,6 +49,6 @@ struct BoxShape : public Shape {
     virtual ~BoxShape();
 
     ShapeType GetType() const override;
-    float GetMomentOfIntertia() const override;
+    float GetMomentOfInertia(float mass) const override;
     Shape* Clone() const override;
 };
