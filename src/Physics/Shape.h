@@ -9,12 +9,17 @@ enum class ShapeType {
     Polygon,
 };
 
+struct Body;
 struct Shape {
     virtual ~Shape() = default;
     virtual ShapeType GetType() const = 0;
     // Without mass (Body will handle the mass)
     virtual float GetMomentOfInertia(float mass) const = 0;
     virtual Shape* Clone() const = 0;
+
+    static bool IsCircle(Body* body);
+    static bool IsPolygon(Body* body);
+    static bool IsBox(Body* body);
 };
 
 struct CircleShape : public Shape {

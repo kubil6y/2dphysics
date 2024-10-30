@@ -40,7 +40,6 @@ void Body::Update(float dt) {
 
     bool isPolygon = shape->GetType() == ShapeType::Polygon ||
                      shape->GetType() == ShapeType::Box;
-
     if (isPolygon) {
         PolygonShape* polygonShape = static_cast<PolygonShape*>(shape);
         polygonShape->UpdateVertices(rotation, position);

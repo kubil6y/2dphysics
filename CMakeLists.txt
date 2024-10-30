@@ -35,6 +35,9 @@ add_executable(${PROJECT_NAME} src/main.cpp
 
     src/Physics/Shape.h
     src/Physics/Shape.cpp
+
+    src/Physics/CollisionDetection.h
+    src/Physics/CollisionDetection.cpp
 )
 
 # Link libraries

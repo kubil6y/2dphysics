@@ -1,4 +1,5 @@
 #include "Shape.h"
+#include "Body.h"
 #include <iostream>
 
 CircleShape::CircleShape(float radius) : radius{radius} {
@@ -87,4 +88,16 @@ float BoxShape::GetMomentOfInertia(float mass) const {
 
 Shape* BoxShape::Clone() const {
     return new BoxShape{width, height};
+}
+
+bool Shape::IsCircle(Body* body) {
+    return body->shape->GetType() == ShapeType::Circle;
+}
+
+bool Shape::IsPolygon(Body* body) {
+    return body->shape->GetType() == ShapeType::Polygon;
+}
+
+bool Shape::IsBox(Body* body) {
+    return body->shape->GetType() == ShapeType::Box;
 }

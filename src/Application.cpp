@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Physics/Body.h"
+#include "Physics/CollisionDetection.h"
 #include "Physics/Constants.h"
 
 bool Application::IsRunning() {
@@ -9,9 +10,11 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Body* body = new Body{BoxShape{200.f, 100.f}, Graphics::Width() / 2.f,
-                          Graphics::Height() / 2.f, 1.f};
-    bodies.push_back(body);
+    Body* bigBall = new Body{CircleShape{100.f}, 100.f, 100.f, 1.f};
+    bodies.push_back(bigBall);
+
+    Body* smallBall = new Body{CircleShape{50.f}, 500.f, 100.f, 1.f};
+    bodies.push_back(smallBall);
 }
 
 void Application::Input() {
@@ -95,17 +98,25 @@ void Application::Update() {
 
     // Apply forces to bodies
     for (auto body : bodies) {
-        // body->AddForce(pushForce);
+        Vec2 weight = Vec2{0.f, 9.81 * PIXELS_PER_METER};
+        body->AddForce(weight);
 
-        // Vec2 weight = {0.f, body->mass * 9.81f * PIXELS_PER_METER};
-        // body->AddForce(weight);
-
-        float torque = 200.f;
-        body->AddTorque(torque);
+        Vec2 wind = Vec2{10.f * PIXELS_PER_METER, 0.f};
+        body->AddForce(wind);
     }
 
     for (auto body : bodies) {
         body->Update(dt);
+    }
+
+    // Check Collision detection
+    for (int i = 0; i < static_cast<int>(bodies.size()) - 1; ++i) {
+        for (int j = i + 1; j < static_cast<int>(bodies.size()); ++j) {
+            Body* a = bodies[i];
+            Body* b = bodies[j];
+            if (CollisionDetection::IsColliding(a, b)){ 
+            }
+        }
     }
 
     // Bounds correction
