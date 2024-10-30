@@ -30,6 +30,8 @@ bool CollisionDetection::IsCollidingPolygonPolygon(Body* a, Body* b) {
     return false;
 }
 
-bool CollisionDetection::IsCollidingPolygonCircle(Body* a, Body* b) {
+bool CollisionDetection::IsCollidingPolygonCircle(Body* p, Body* c) {
+    CircleShape* cricleShape = static_cast<CircleShape*>(c->shape);
+    PolygonShape* polygonShape = static_cast<PolygonShape*>(p->shape);
     return false;
 }

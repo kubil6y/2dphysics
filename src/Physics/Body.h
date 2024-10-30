@@ -22,6 +22,7 @@ struct Body {
     float I;
     float invI;
 
+    bool isColliding;
     Shape* shape = nullptr;
 
     Body(const Shape& shape, float x, float y, float m);

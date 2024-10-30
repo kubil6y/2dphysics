@@ -114,7 +114,11 @@ void Application::Update() {
         for (int j = i + 1; j < static_cast<int>(bodies.size()); ++j) {
             Body* a = bodies[i];
             Body* b = bodies[j];
-            if (CollisionDetection::IsColliding(a, b)){ 
+            a->isColliding = false;
+            b->isColliding = false;
+            if (CollisionDetection::IsColliding(a, b)) {
+                a->isColliding = true;
+                b->isColliding = true;
             }
         }
     }
@@ -161,18 +165,19 @@ void Application::Render() {
     }
 
     for (auto body : bodies) {
+        Uint32 color = body->isColliding ? 0XFF0000FF : 0XFFFFFFFF;
+
         switch (body->shape->GetType()) {
         case ShapeType::Box: {
             BoxShape* boxShape = static_cast<BoxShape*>(body->shape);
             Graphics::DrawPolygon(body->position.x, body->position.y,
-                                  boxShape->worldVertices, 0XFFFFFFFF);
+                                  boxShape->worldVertices, color);
             break;
         }
         case ShapeType::Circle: {
             CircleShape* circleShape = static_cast<CircleShape*>(body->shape);
             Graphics::DrawCircle(body->position.x, body->position.y,
-                                 circleShape->radius, body->rotation,
-                                 0XFFFFFFFF);
+                                 circleShape->radius, body->rotation, color);
             break;
         }
         case ShapeType::Polygon: {
