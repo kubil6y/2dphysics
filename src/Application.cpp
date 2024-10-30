@@ -104,17 +104,8 @@ void Application::Update() {
         body->AddTorque(torque);
     }
 
-    // Integrate the acceleration and velocity to estimate new position
     for (auto body : bodies) {
-        body->Integrate(dt);
-
-        bool isPolygon = body->shape->GetType() == ShapeType::Polygon ||
-                         body->shape->GetType() == ShapeType::Box;
-        if (isPolygon) {
-            PolygonShape* polygonShape =
-                static_cast<PolygonShape*>(body->shape);
-            polygonShape->UpdateVertices(body->rotation, body->position);
-        }
+        body->Update(dt);
     }
 
     // Bounds correction

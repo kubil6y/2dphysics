@@ -34,9 +34,17 @@ Body::~Body() {
     std::cout << "Body destructor called!" << std::endl;
 }
 
-void Body::Integrate(float dt) {
+void Body::Update(float dt) {
     IntegrateLinear(dt);
     IntegrateAngular(dt);
+
+    bool isPolygon = shape->GetType() == ShapeType::Polygon ||
+                     shape->GetType() == ShapeType::Box;
+
+    if (isPolygon) {
+        PolygonShape* polygonShape = static_cast<PolygonShape*>(shape);
+        polygonShape->UpdateVertices(rotation, position);
+    }
 }
 
 void Body::IntegrateLinear(float dt) {

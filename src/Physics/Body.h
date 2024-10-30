@@ -27,7 +27,7 @@ struct Body {
     Body(const Shape& shape, float x, float y, float m);
     ~Body();
 
-    void Integrate(float dt);
+    void Update(float dt);
     void IntegrateLinear(float dt);
     void IntegrateAngular(float dt);
     void AddForce(const Vec2& force);
