@@ -22,8 +22,8 @@ Shape* CircleShape::Clone() const {
     return new CircleShape{radius};
 }
 
-PolygonShape::PolygonShape(const std::vector<Vec2> vertices)
-    : vertices{vertices} {
+PolygonShape::PolygonShape(const std::vector<Vec2> vertices) {
+    localVertices = vertices;
     std::cout << "PolygonShape constructor called" << std::endl;
 }
 
@@ -41,7 +41,17 @@ float PolygonShape::GetMomentOfInertia(float mass) const {
 }
 
 Shape* PolygonShape::Clone() const {
-    return new PolygonShape{vertices};
+    return new PolygonShape{localVertices};
+}
+
+void PolygonShape::UpdateVertices(float angle, const Vec2& position) {
+    for (int i = 0; i < static_cast<int>(localVertices.size()); ++i) {
+        // Rotation is origin-dependent: When you rotate a point around a
+        // reference point, it spins relative to that point’s coordinates.
+        // Rotating around the origin keeps the shape's structure consistent
+        worldVertices[i] = localVertices[i].Rotate(angle);
+        worldVertices[i] += position;
+    }
 }
 
 BoxShape::BoxShape(float width, float height) {
@@ -50,10 +60,15 @@ BoxShape::BoxShape(float width, float height) {
 
     // Center of mass is in the middle
     // Load vertices of the box polygon clockwise
-    vertices.push_back(Vec2{-width / 2.f, -height / 2.f});
-    vertices.push_back(Vec2{width / 2.f, -height / 2.f});
-    vertices.push_back(Vec2{width / 2.f, height / 2.f});
-    vertices.push_back(Vec2{-width / 2.f, height / 2.f});
+    localVertices.push_back(Vec2{-width / 2.f, -height / 2.f});
+    localVertices.push_back(Vec2{width / 2.f, -height / 2.f});
+    localVertices.push_back(Vec2{width / 2.f, height / 2.f});
+    localVertices.push_back(Vec2{-width / 2.f, height / 2.f});
+
+    worldVertices.push_back(Vec2{-width / 2.f, -height / 2.f});
+    worldVertices.push_back(Vec2{width / 2.f, -height / 2.f});
+    worldVertices.push_back(Vec2{width / 2.f, height / 2.f});
+    worldVertices.push_back(Vec2{-width / 2.f, height / 2.f});
     std::cout << "BoxShape constructor called" << std::endl;
 }
 
@@ -66,8 +81,8 @@ ShapeType BoxShape::GetType() const {
 }
 
 float BoxShape::GetMomentOfInertia(float mass) const {
-    // I = 1/12 * (w^2 * h^2) * mass
-    return 0.08333 * (width * width * height * height) * mass;
+    // I = 1/12 * (w^2 + h^2) * mass
+    return 0.08333 * (width * width + height * height) * mass;
 }
 
 Shape* BoxShape::Clone() const {

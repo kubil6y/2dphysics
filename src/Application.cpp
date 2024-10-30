@@ -100,13 +100,21 @@ void Application::Update() {
         // Vec2 weight = {0.f, body->mass * 9.81f * PIXELS_PER_METER};
         // body->AddForce(weight);
 
-        // float torque = 30.f;
-        // body->AddTorque(torque);
+        float torque = 200.f;
+        body->AddTorque(torque);
     }
 
     // Integrate the acceleration and velocity to estimate new position
     for (auto body : bodies) {
         body->Integrate(dt);
+
+        bool isPolygon = body->shape->GetType() == ShapeType::Polygon ||
+                         body->shape->GetType() == ShapeType::Box;
+        if (isPolygon) {
+            PolygonShape* polygonShape =
+                static_cast<PolygonShape*>(body->shape);
+            polygonShape->UpdateVertices(body->rotation, body->position);
+        }
     }
 
     // Bounds correction
@@ -155,7 +163,7 @@ void Application::Render() {
         case ShapeType::Box: {
             BoxShape* boxShape = static_cast<BoxShape*>(body->shape);
             Graphics::DrawPolygon(body->position.x, body->position.y,
-                                      boxShape->vertices, 0XFFFFFFFF);
+                                  boxShape->worldVertices, 0XFFFFFFFF);
             break;
         }
         case ShapeType::Circle: {

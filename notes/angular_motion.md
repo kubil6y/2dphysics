@@ -16,6 +16,6 @@
 Δω: Change in angular velocity (rad/s)
 Δt: Time interval (seconds)
 
-Δθ = ω * t + (α * t^2) / 2      (angular kinematics)
+Δθ = ω * t + (α * t^2) / 2    (angular kinematics)
 ΔX = V0 * t + (a * t^2) / 2   (linear kinematics)
 ```
