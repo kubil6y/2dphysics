@@ -30,7 +30,6 @@ void Application::Input() {
             };
             break;
         case SDL_MOUSEMOTION:
-            int another, lmfao;
             int x, y;
             SDL_GetMouseState(&x, &y);
             bodies[0]->position.x = x;

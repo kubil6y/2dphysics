@@ -36,4 +36,5 @@ struct Body {
     void ClearForces();
     void AddTorque(float torque);
     void ClearTorque();
+    void ApplyImpulse(const Vec2& j);
 };

@@ -25,6 +25,16 @@ We can choose different methods to **resolve** collisions:
 - Penalty method
   - Adjust the **acceleration** of colliding objects
 
+These collision response methods are typically applied **separately**, based on the specific requirements of the simulation or game engine. Here’s a bit more on how each might be chosen or combined:
+
+1. **Projection method**: Often used to correct positions after a collision is detected. It simply moves objects apart to prevent overlapping. This can be used alone, or in combination with other methods if only positional adjustment is needed without changes to velocity.
+
+2. **Impulse method**: Adjusts the velocity of objects on collision by calculating and applying an impulse, typically providing a realistic response like bouncing. It’s often used in physics simulations where conservation of momentum is important. This method is usually applied separately but can be combined with the projection method for better accuracy (position correction + velocity change).
+
+3. **Penalty method**: Adds a small force over time, effectively increasing acceleration to separate overlapping objects. It’s less accurate than impulses but computationally simpler, commonly used in soft-body physics where elasticity is desired. This is usually applied on its own or with minor projection adjustments.
+
+Using **multiple methods simultaneously** is possible but less common since each has a distinct approach to collision resolution.
+
 ### 1. Projection Method
 
 Perhaps the simplest and most intuitive method of resolving interpenetrations would be simply separate them out by changing their **positions** in opposite direction along the collision **normal**. This is known as **projection method**.
@@ -48,10 +58,10 @@ db = depth / (1/ma + 1/mb) * 1/mb
 #### Momentum
 
 ```
-M = m * V
+P = m * V
 ```
 
-- M is the momentum
+- P is the momentum
 - m is the mass of the object
 - V is the velocity of the object
 
@@ -62,4 +72,13 @@ M = m * V
 
 ```
 m1V1 + m2V2 = m1V1' + m2V2'
+```
+
+- **Impulse** is a change in momentum by performing a direct change in **velocity**.
+
+Impulse:
+
+```
+J = FΔt = mΔv
+Δv = J / m
 ```
