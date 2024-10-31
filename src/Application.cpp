@@ -2,6 +2,8 @@
 #include "Physics/Body.h"
 #include "Physics/CollisionDetection.h"
 #include "Physics/Constants.h"
+#include "Physics/Contact.h"
+#include <cstdio>
 
 bool Application::IsRunning() {
     return running;
@@ -11,9 +13,8 @@ void Application::Setup() {
     running = Graphics::OpenWindow();
 
     Body* bigBall = new Body{CircleShape{100.f}, 100.f, 100.f, 1.f};
-    bodies.push_back(bigBall);
-
     Body* smallBall = new Body{CircleShape{50.f}, 500.f, 100.f, 1.f};
+    bodies.push_back(bigBall);
     bodies.push_back(smallBall);
 }
 
@@ -28,62 +29,20 @@ void Application::Input() {
             if (event.key.keysym.sym == SDLK_ESCAPE) {
                 running = false;
             };
-            if (event.key.keysym.sym == SDLK_w) {
-                pushForce.y = -50 * PIXELS_PER_METER;
-            }
-            if (event.key.keysym.sym == SDLK_s) {
-                pushForce.y = 50 * PIXELS_PER_METER;
-            }
-            if (event.key.keysym.sym == SDLK_d) {
-                pushForce.x = 50 * PIXELS_PER_METER;
-            }
-            if (event.key.keysym.sym == SDLK_a) {
-                pushForce.x = -50 * PIXELS_PER_METER;
-            }
-            break;
-
-        case SDL_KEYUP:
-            if (event.key.keysym.sym == SDLK_w) {
-                pushForce.y = 0.f;
-            }
-            if (event.key.keysym.sym == SDLK_s) {
-                pushForce.y = 0.f;
-            }
-            if (event.key.keysym.sym == SDLK_d) {
-                pushForce.x = 0.f;
-            }
-            if (event.key.keysym.sym == SDLK_a) {
-                pushForce.x = 0.f;
-            }
             break;
         case SDL_MOUSEMOTION:
-            mouseCursor.x = event.motion.x;
-            mouseCursor.y = event.motion.y;
-        case SDL_MOUSEBUTTONDOWN:
-            if (!leftMouseButtonDown &&
-                event.button.button == SDL_BUTTON_LEFT) {
-                leftMouseButtonDown = true;
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                mouseCursor.x = x;
-                mouseCursor.y = y;
-            }
-            break;
-        case SDL_MOUSEBUTTONUP:
-            if (leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
-                leftMouseButtonDown = false;
-                Vec2 impulseDir =
-                    (bodies[0]->position - mouseCursor).Normalized();
-                float impulseMagnitude =
-                    (bodies[0]->position - mouseCursor).Magnitude() * 5.f;
-                bodies[0]->velocity = impulseDir * impulseMagnitude;
-            }
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            bodies[0]->position.x = x;
+            bodies[0]->position.y = y;
             break;
         }
     }
 }
 
 void Application::Update() {
+    Graphics::ClearScreen(0xFF0F0721);
+
     static int timePreviousFrame = 0;
     int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - timePreviousFrame);
     if (timeToWait > 0) {
@@ -98,11 +57,11 @@ void Application::Update() {
 
     // Apply forces to bodies
     for (auto body : bodies) {
-        Vec2 weight = Vec2{0.f, 9.81 * PIXELS_PER_METER};
-        body->AddForce(weight);
-
-        Vec2 wind = Vec2{10.f * PIXELS_PER_METER, 0.f};
-        body->AddForce(wind);
+        // Vec2 weight = Vec2{0.f, 9.81 * PIXELS_PER_METER};
+        // body->AddForce(weight);
+        //
+        // Vec2 wind = Vec2{10.f * PIXELS_PER_METER, 0.f};
+        // body->AddForce(wind);
     }
 
     for (auto body : bodies) {
@@ -116,7 +75,18 @@ void Application::Update() {
             Body* b = bodies[j];
             a->isColliding = false;
             b->isColliding = false;
-            if (CollisionDetection::IsColliding(a, b)) {
+            Contact contact;
+            if (CollisionDetection::IsColliding(a, b, contact)) {
+                Graphics::DrawFillCircle(contact.start.x, contact.start.y, 3.f,
+                                         0XFFFFFFFF);
+                Graphics::DrawFillCircle(contact.end.x, contact.end.y, 3.f,
+                                         0XFFFFFFFF);
+                Graphics::DrawLine(
+                    contact.start.x, contact.start.y,
+                    contact.start.x + contact.normal.x * contact.depth,
+                    contact.start.y + contact.normal.y * contact.depth,
+                    0XFFFFFFFF);
+
                 a->isColliding = true;
                 b->isColliding = true;
             }
@@ -157,7 +127,6 @@ void Application::Update() {
 }
 
 void Application::Render() {
-    Graphics::ClearScreen(0xFF0F0721);
 
     if (leftMouseButtonDown) {
         Graphics::DrawLine(bodies[0]->position.x, bodies[0]->position.y,

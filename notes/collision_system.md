@@ -2,10 +2,10 @@
 
 Regardless of the shape, our collision contact information will always contain:
 
-- start point
-- end point
-- a normal direction
-- the depth of the collision
+- Start point
+- End point
+- A normal direction
+- The depth of the collision
 
 ## Collision Detection
 

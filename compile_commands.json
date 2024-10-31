@@ -38,5 +38,10 @@
   "directory": "/home/kubilay/dev/cpp/2dphysics/dist",
   "command": "/usr/bin/c++   -I/usr/include/SDL2    -std=c++17 -o CMakeFiles/physics_engine.dir/src/Physics/CollisionDetection.cpp.o -c /home/kubilay/dev/cpp/2dphysics/src/Physics/CollisionDetection.cpp",
   "file": "/home/kubilay/dev/cpp/2dphysics/src/Physics/CollisionDetection.cpp"
+},
+{
+  "directory": "/home/kubilay/dev/cpp/2dphysics/dist",
+  "command": "/usr/bin/c++   -I/usr/include/SDL2    -std=c++17 -o CMakeFiles/physics_engine.dir/src/Physics/Contact.cpp.o -c /home/kubilay/dev/cpp/2dphysics/src/Physics/Contact.cpp",
+  "file": "/home/kubilay/dev/cpp/2dphysics/src/Physics/Contact.cpp"
 }
 ]
