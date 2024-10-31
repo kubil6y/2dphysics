@@ -30,6 +30,7 @@ void Application::Input() {
             };
             break;
         case SDL_MOUSEMOTION:
+            int another, lmfao;
             int x, y;
             SDL_GetMouseState(&x, &y);
             bodies[0]->position.x = x;
@@ -126,7 +127,6 @@ void Application::Update() {
 }
 
 void Application::Render() {
-
     if (leftMouseButtonDown) {
         Graphics::DrawLine(bodies[0]->position.x, bodies[0]->position.y,
                            mouseCursor.x, mouseCursor.y, 0xFF313131);
