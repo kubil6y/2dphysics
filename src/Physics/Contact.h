@@ -11,4 +11,6 @@ struct Contact {
     Vec2 end;
     Vec2 normal;
     float depth;
+
+    void ResolvePenetration();
 };

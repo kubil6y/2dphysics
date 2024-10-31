@@ -12,10 +12,9 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Body* bigBall = new Body{CircleShape{100.f}, 100.f, 100.f, 1.f};
-    Body* smallBall = new Body{CircleShape{50.f}, 500.f, 100.f, 1.f};
+    Body* bigBall = new Body{CircleShape{200.f}, Graphics::Width() / 2.f,
+                             Graphics::Height() / 2.f, 0.f};
     bodies.push_back(bigBall);
-    bodies.push_back(smallBall);
 }
 
 void Application::Input() {

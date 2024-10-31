@@ -1,4 +1,5 @@
 #include "Body.h"
+#include <cmath>
 #include <iostream>
 
 Body::Body(const Shape& shape, float x, float y, float m) {
@@ -16,6 +17,7 @@ Body::Body(const Shape& shape, float x, float y, float m) {
     if (mass != 0) {
         invMass = 1.f / mass;
     } else {
+        // Infinite mass (static object)
         invMass = 0.f;
     };
 
@@ -34,7 +36,16 @@ Body::~Body() {
     std::cout << "Body destructor called!" << std::endl;
 }
 
+bool Body::IsStatic() const {
+    float epsilon = 1e-6;
+    return fabs(invMass - 0.f) < epsilon;
+}
+
 void Body::Update(float dt) {
+    if (IsStatic()) {
+        return;
+    }
+
     IntegrateLinear(dt);
     IntegrateAngular(dt);
 

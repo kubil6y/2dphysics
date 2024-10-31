@@ -28,6 +28,7 @@ struct Body {
     Body(const Shape& shape, float x, float y, float m);
     ~Body();
 
+    bool IsStatic() const;
     void Update(float dt);
     void IntegrateLinear(float dt);
     void IntegrateAngular(float dt);
